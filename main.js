@@ -517,3 +517,88 @@ boxElement.classList.toggle("red");
 console.log(boxElement.classList.add("red"));
 console.log(boxElement.classList.contains("red"));
 //
+
+// DOM Event
+// Su kien onclick
+var h1Element = document.querySelector("h1");
+
+// cach lang nghe su kien va code
+// e = event mouse even: in console.log(e) ra de xem duoc cac gia tri khac neu can nhung e.target co the lay duoc ra element node do
+//neu in thang ra h1Element se xay ra nhieu van de loi
+h1Element.onclick = function (e) {
+    console.log(e.target);
+};
+// truong hop khac
+// cach chon nhieu the h1 va click vao the h1 nao thi the do moi lang nghe su kien
+var h1Element = document.querySelectorAll("h1");
+for (var i = 1; h1Element.length; ++i) {
+    h1Element[i].onclick = function (e) {
+        console.log(e.target);
+    };
+}
+
+// Su kien oninput va onchange
+// oninput la khi ban nhap vao o input se lang nghe duoc su kien va se in ra tu chung ta nhap luon nhap den dau in den do
+// onchange la khi ban khong click chuot vao o do nua thi no se hien chu chung ta nhap
+// va luu y phai co su thay doi so voi lan nhap truoc thi lan nhap sau moi duoc in ra
+//onkeydown : khi ban nhan xuong su kien da lang nghe va nhan value roi nhung
+//ban phai nhan them chu nua thi luc do no moi in ra se bi cham lai 1 nhip
+//onkeyup : khi ban nhap xuong va bna phai tha ra se in ra chu do luon neu khong tha ra se khong nhan duoc value
+
+// oninput
+
+var inputElement = document.querySelector('input[type="text"]');
+// lang nghe su kien va tien hanh code
+inputElement.oninput = function (e) {
+    console.log(e.target.value); // in ra nhung gi chung ta nhap
+};
+
+// onchange
+
+var inputElement = document.querySelector('input[type="text"]');
+// lang nghe su kien va tien hanh code
+inputElement.onchange = function (e) {
+    console.log(e.target.value); // in ra nhung gi chung ta nhap
+};
+
+//truong hop khac
+{
+    /* <select>
+    <option value="1">Javascript</option>
+    <option value="2">Javascript</option>
+    <option value="3">Javascript</option>
+</select>; */
+}
+var inputElement = document.querySelector("select");
+// lang nghe su kien va tien hanh code
+inputElement.onchange = function (e) {
+    console.log(e.target.value); // in ra value cua no la 1,2,3
+};
+
+// truong hop khac
+var inputElement = document.querySelector('input[type="checkbox"]');
+// lang nghe su kien va tien hanh code
+inputElement.onchange = function (e) {
+    console.log(e.target.checkbox); // se in ra true hoac false
+};
+
+//onkeydown
+var inputElement = document.querySelector('input[type="text"]');
+// lang nghe su kien va tien hanh code
+inputElement.onkeydown = function (e) {
+    console.log(e.target.value); // neu nhap ab thi se chi in ra a cham 1 nhip
+};
+
+//onkeyup
+var inputElement = document.querySelector('input[type="text"]');
+// lang nghe su kien va tien hanh code
+inputElement.onkeyup = function (e) {
+    console.log(e.target.value); // nhan vao phim va tha ra thi se in ra chu do luon
+};
+
+var inputElement = document.querySelector('input[type="text"]');
+// lang nghe su kien va tien hanh code
+inputElement.onkeyup = function (e) {
+    console.log(e.which); // vi du neu chung ta nhan phim esc se in ra 27 kieu nhu bang ma ascII cua 1 tu
+};
+//e.which thuong duoc su dung lam menu co nhieu su lua chon
