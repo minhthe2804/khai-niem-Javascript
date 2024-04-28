@@ -602,3 +602,8 @@ inputElement.onkeyup = function (e) {
     console.log(e.which); // vi du neu chung ta nhan phim esc se in ra 27 kieu nhu bang ma ascII cua 1 tu
 };
 //e.which thuong duoc su dung lam menu co nhieu su lua chon
+
+// loai bo tinh nang mac dinh cua trinh duyet doi voi mot hanh dong nao do
+e.preventDefault();
+// loai bo tinh nang chong noi bot
+e.stopPropagation();
