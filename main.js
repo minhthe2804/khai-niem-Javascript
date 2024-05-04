@@ -607,3 +607,504 @@ inputElement.onkeyup = function (e) {
 e.preventDefault();
 // loai bo tinh nang chong noi bot
 e.stopPropagation();
+
+// JSON : la mot finh dang du lieu duoi dang chuoi
+// Number,String,Boolean,Null,Array,Object
+// Stringify: chuyen cac kieu du lieu tren sang JSON
+// Parse: Chuyen tu JSON sang ca kieu du lieu tren
+
+// cach chuyen doi parse
+var json = "1"; // number
+var json = '"Minh The"'; //string
+var json = "true"; // boolean
+var json = "Null"; // null
+var json = '["Javascript","PHP"]'; // array
+var json = '{"name": "Minh The", "age": "21"}'; // object
+
+console.log(JSON.parse(json));
+
+// cach chuyen doi Stringtify
+
+var json = 1; // number
+var json = "Minh The"; //string
+var json = true; // boolean
+var json = Null; // null
+var json = ["Javascript", "PHP"]; // array
+var json = {
+    name: "Minh The",
+    age: "21",
+}; // object
+
+console.log(JSON.stringify(json));
+
+// Promise
+//Sync:xu li dong bo: xu li lan luot theo tuan tu
+//Async:xu li bat dong bo: tuy theo chung ta code muon xu li bat dong bo
+// nhung thang lam async:
+// setTimeout, setInterval, fetch, XMLHttpRequest, file reading,
+// requestAnimationFrame
+
+//vd bat dong bo
+setTimeout(function () {
+    console.log(1);
+}, 1000);
+
+console.log(2);
+
+// noi dau
+// callback hell: nhung cai ben trong phai phu thuoc vao cai ben ngoai thi moi chay duoc nhung phuc tap va kho hieu
+setTimeout(function () {
+    console.log(1);
+    setTimeout(function () {
+        console.log(2);
+    }, 1000);
+    setTimeout(function () {
+        console.log(3);
+    }, 1000);
+    setTimeout(function () {
+        console.log(4);
+    }, 1000);
+}, 1000);
+
+// cach dung promise
+// 1 . new promise : khoi tao vi promise la mot object constructor da duoc xay dung san va cung se su dung lai bang cach khoi tao no
+// 2. executor : duoc truyen vao khi khoi tao promise va nhan vao hai tham so la resolve() va reject()
+
+// cac trang thai cua promise
+// 1.pendding: cho chung ta xu li
+// 2.Fulfilled: trang thai thanh cong
+// 3.Reject: trang thai that bai
+
+var promise = new Promise(
+    //executor
+    function (resolve, reject) {
+        //logic
+        //thanh cong: resolve()
+        //that bai: reject()
+        resolve([
+            {
+                id: 1,
+                name: "Javascript",
+            },
+        ]);
+        reject("Co loi!");
+    }
+);
+
+promise
+    .then(function (succes) {
+        // duoc hoat dong khi goi resolve() // thanh cong
+        console.log(succes);
+    })
+    .catch(function (error) {
+        // duoc goi khi reject()  // that bai
+        console.log(error);
+    })
+    .finally(function () {
+        // duoc goi khi 1 trong 2 cai tren duoc goi
+        console.log("done");
+    });
+
+// promise chain
+var promise = new Promise(
+    //executor
+    function (resolve, reject) {
+        //logic
+        //thanh cong: resolve()
+        //that bai: reject()
+        resolve();
+        reject("Co loi!");
+    }
+);
+
+promise
+    .then(function () {
+        return new Promise(function (resolve, reject) {
+            // neu nhu return ra mot promise thi cac ham ben duoi phai cho doi ham
+            setTimeout(function () {
+                resolve([1, 2, 3]); //ham ben tren chay xong moi nhan duoc du lieu(neu return nhu nay thi ben duoi van co
+                //the dung .then cua cai return promise nay)
+            }, 3000);
+        });
+    })
+    .then(function (data) {
+        console.log(data);
+    })
+    .catch(function (error) {
+        // duoc goi khi reject()  // that bai
+        console.log(error);
+    })
+    .finally(function () {
+        // duoc goi khi 1 trong 2 cai tren duoc goi
+        console.log("done");
+    });
+
+// vi du khac nua
+
+function sleep(ms) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, ms);
+    });
+}
+
+sleep(1000)
+    .then(function () {
+        console.log(1);
+        return sleep(1000); // goi lai ham sleep ben tren la mot return promise nen cho them 1s thi ham ben duoi moi nhan duoc
+    })
+    // .then(function () {
+    //     console.log(2);
+    //     return sleep(1000);
+    // })
+    .then(function () {
+        console.log(2);
+        return new Promise(function (resolve, reject) {
+            // neu nhu ban gap mot loi giua duong thi ban phai dung them .catch
+            reject("co loi"); // kieu nhu la chung ta co the phai xu li lan luot tung viec mot neu nhu loi thi se khong in ra them
+        });
+    })
+    .then(function () {
+        console.log(3);
+        return sleep(1000);
+    })
+    .then(function () {
+        console.log(4);
+        return sleep(1000);
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
+
+// promise resolve()
+// promise reject()
+// promise all
+
+var promise = Promise.resolve();
+var promise = Promise.reject();
+
+promise
+    .then(function (succes) {
+        console.log(succes);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
+var promise1 = new Promise(function (resolve) {
+    setTimeout(function () {
+        resolve([1]);
+    }, 1000);
+});
+
+var promise2 = new Promise(function (resolve) {
+    setTimeout(function () {
+        resolve([1]);
+    }, 2000);
+});
+
+var promise2 = Promise.reject("Co loi!"); // neu nhu co loi giua duong se bay thang vao .catch luon
+// promise all la co the chay song song ca hai promise cung mot luc
+Promise.all([promise1], promise2)
+    .then(function (result) {
+        var result1 = result[0];
+        var result2 = result[1];
+        console.log(result1.concat(result2));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
+// ES6
+// var,let,const
+// var :co the truy xuat duoc pham vi rong hon ke ca khi khai bao trong hay ngoai function
+// let: truy xuat duoc trong pham vi hep hon khi khai bao trong mot function thi ra ben ngoai function do khong the truy xuat duoc
+// const: truy xuat duoc trong pham vi hep hon khi khai bao trong mot function thi ra ben ngoai function do khong the truy xuat duoc
+
+// var: neu nhu khai bao thi trinh bien dich se tu dua len dau
+// vi du: neu nhu nay thi var a se duoc dua len dau
+a = 1;
+var a;
+// let va const: se khong dung duoc nhu nay ma bat buoc phai khai bao ten bien truoc
+
+// var && let : co the dung gan di gan lai duoc nhieu lan
+// const: chi gan duoc 1 lan cho mot gia tri
+
+// Arrow function
+// cach viet nhanh ngan gon hon
+const logger = (log) => {
+    //(log) tham so truyen vao
+    console.log(log);
+};
+logger("message");
+
+// const sum = (a, b) => {
+//     return a + b;
+// };
+
+// neu nhu muon viet ngan hon khong can ghi return thi phai bo di hai dau {}
+// const sum = (a, b) => a + b;
+// console.log(sum(2, 2));
+
+// neu nhu muon tra ve mot obj thi ban phai dong no lai
+const sum = (a, b) => ({
+    a: a,
+    b: b,
+});
+console.log(sum(2, 2));
+
+// Arrow function: se khong dung duoc obj constructor
+
+// const course = {
+//     name: "Javascript",
+//     getName: function () {
+//         return this.name; // context
+//     },
+// };
+
+const course = {
+    name: "Javascript",
+    getName: () => {
+        return this.name; // neu dung nhu nay cung underfined luon vi no khong phai context
+    },
+};
+
+// const Course = function (name, price) {
+//     this.name = name;
+//     this.price = price;
+// };
+// const jsCourse = new Course("Javascript", 1000);
+
+const Course = (name, price) => {
+    // neu dung nhu nay se bi underfined vi no khong phai obj constructor
+    this.name = name;
+    this.price = price;
+};
+const jsCourse = new Course("Javascript", 1000);
+
+// template listerals:
+
+const courseName = "PHP";
+const description = `Khoa hoc: ${courseName}`;
+
+console.log(description);
+
+// multi - line String
+
+const lines = `line 1
+line2
+line3`;
+
+console.log(lines);
+
+// classes: viet nhu nay se giup clean code hon neu nhieu code phuc tap
+class List {
+    constructor(name, price) {
+        this.name = name;
+        this.price = price;
+    }
+    getName() {
+        return this.name;
+    }
+    getPrice() {
+        return this.price;
+    }
+    run() {
+        const isSucces = false;
+        if (!isSucces) {
+            isSucces = true;
+        }
+    }
+}
+
+const user1 = new List("Javascript", 1000);
+const user2 = new List("PHP", 2000);
+
+console.log(user1);
+console.log(user2);
+
+// enhanced obj
+// dinh nghia key: value cho obj
+
+var names = "Javascript";
+var price = 1000;
+
+var list = {
+    names, // neu nhu ten bien duoc dat ma giong voi ca key va value thi dung nhu nay
+    price,
+};
+
+console.log(list);
+// dinh nghia method cho obj
+
+var names = "Javascript";
+var price = 1000;
+
+var list = {
+    names, // neu nhu ten bien duoc dat ma giong voi ca key va value thi dung nhu nay
+    price,
+    getName() {
+        return names;
+    },
+};
+
+console.log(list.getName());
+// dinh nghia key cho obj duoi dang bien
+
+var filedName = "name";
+var filedPrice = "price";
+
+var list = {
+    [filedName]: "Javascript",
+    [filedPrice]: "1000",
+};
+
+console.log(list);
+
+// Default paramenter values:dinh nghia gia tri mac dinh cho tham so truyen vao voi nhung thuoc tinh truyen vao khong bat buoc
+
+function logger(log, type = "log") {
+    console[type].log(log); // neu nhu type khong nhan duoc mot tham so nao tu ham goi lai ben duoi thi mac dinh se in ra log
+}
+
+logger("Message");
+logger("Message", "error"); // vi du nhu nay
+
+//Destructuring : phan gia
+
+//array + rest paramenter
+
+var array = ["Javascript", "PHP", "Java"];
+var [a, b, c] = array; // a,b,c o day duoc hieu nhu la array[0] = a; , array[1] = b; , array[2] = c;
+console.log(a, b, c);
+
+var array = ["Javascript", "PHP", "Java"];
+var [a, c] = array; // a,b,c o day duoc hieu nhu la array[0] = a; , array[1] = b; , array[2] = c;
+console.log(a, c); // viet nhu nay co the hieu chi lay a va c khong in ra b
+
+var array = ["Javascript", "PHP", "Java"];
+var [a, ...rest] = array; // lay ra a va phan tu con lai trong mang
+console.log(a);
+console.log(rest);
+
+//Object + rest paramenter
+
+var object = {
+    names: "Javascript",
+    price: 1000,
+};
+
+//
+var { names, price } = object; // phai viet dung key moi in ra duoc
+console.log(names, price);
+
+//
+var object = {
+    names: "Javascript",
+    price: 1000,
+    chidren: {
+        names: "PHP",
+    },
+};
+
+//
+var {
+    names,
+    price,
+    chidren: { names: chidrenName },
+} = object; //neu chung ta co them object ben trong thi phai dung nhu va phai dat them ten moi de tranh trung ten voi key nao do
+console.log(names, price, chidrenName);
+
+//
+var object = {
+    names: "Javascript",
+    price: 1000,
+};
+
+//
+var { names, ...rest } = object; // in ra names va cac key value con lai trong obj
+console.log(names); // vi du neu muon xoa name thi khong can phai in ra names nua
+console.log(rest);
+
+// rest paramenter voi function
+function logger(a, ...params) {
+    console.log(a); // a = 1
+    console.log(params); //params la cac so con lai
+}
+
+console.log(1, 2, 3, 4, 5, 6, 7, 8);
+
+var object = {
+    names: "Javascript",
+    price: 1000,
+    chidren: {
+        names: "PHP",
+    },
+};
+
+// truyen nhu nay van dung Destructuring duoc
+function logger({ names, price, ...rest }) {
+    console.log(names);
+    console.log(price);
+    console.log(rest);
+}
+
+logger(object);
+
+//spread: luu y khac voi rest o cho la khi truyen vao thi phai nhu nay moi la spread
+//vi du spread:function tenbien(...array1) : lay tat ca
+//con rest paramenter la function tenbien(a,b,...rest) //  lay cac phan tu con lai
+
+var array1 = ["Javascript", "PHP"];
+
+var array2 = ["Java", "C#"];
+
+var array3 = [...array1, ...array2]; // neu dung nhu nay se coi nhu la lay tat ca phan tu cua array1 va 2 bo di dau ngoac []
+console.log(array3);
+
+var obj1 = {
+    api: "https://minhthe.edu.vn",
+    names: "Java",
+    price: 1000,
+};
+
+var obj1 = {
+    ...obj1,
+    api: "https://minhthe.edu.vn", // luu y trong obj neu key nao trung ten ma duoc gan sau thi se key value do
+};
+
+// spread voi function
+
+var array1 = ["Javascript", "PHP", "Java", "C#"];
+
+function logger(a, b, c) {
+    console.log(a, b, c);
+}
+
+logger(...array1);
+
+function logger(...rest) {
+    // neu nhan nhu nay thi lai co dau []
+    for (var i = 0; i < rest.length; i++) {
+        console.log(rest[i]);
+    }
+}
+
+logger(...array1); //truyen vao mang bo di dau []
+
+// tagged template
+function highlight([first, ...string], ...values) {
+    return values.reduce(
+        // [first] : gia tri khoi tao,  ...arr = first = hoc lap trinh , curr = values = ["javascript","f8"], string = tai !
+        (arr, curr) => [...arr, `<span>${curr}</span>`, string.shift()],
+        [first]
+    );
+}
+
+var brand = "F8";
+var courses = "Javascript";
+
+const html = highlight`Học lập trình ${courses} tại ${brand} !`;
+
+console.log(html.join(""));
+
+// Module
