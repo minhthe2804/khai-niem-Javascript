@@ -1107,4 +1107,47 @@ const html = highlight`Học lập trình ${courses} tại ${brand} !`;
 
 console.log(html.join(""));
 
-// Module
+// Module : 1 module chi export default duoc 1 cai con export const TYPE_LOG = "log"; thi co dung nhieu
+//main.js
+import logger from "./logger.js";
+import { TYPE_LOG, TYPE_WARN, TYPE_ERROR } from "./logger.js";
+//import * as constants from "./constants.js";
+logger("message", TYPE_ERROR);
+//logger.js
+import { TYPE_LOG } from "./constants.js";
+function logger(log, type = TYPE_LOG) {
+    console.log[type](log);
+}
+// constants.js
+export const TYPE_LOG = "log";
+export const TYPE_WARN = "warn";
+export const TYPE_ERROR = "error";
+
+export default logger;
+// optional traning: neu ban khong chac mot dieu gi do khi kiem tra dieu kien se dung(luu y doi voi mot cai gi do chung ta khong viet ra nhu obj array)
+
+const obj = {
+    names: "Javascript",
+    cat: {
+        names: "Java",
+        cat2: {
+            names: "PHP",
+            cat3: {
+                names: "C#",
+            },
+        },
+    },
+};
+
+if (obj?.cat?.cat2?.cat3) {
+    // kiem tra xem co obj,cat,cat2 : kiem tra the nay boi vi phai co (obj) thi moi co (cat) va phai co (cat) moi co (cat2)
+    console.log(obj.cat.cat2.cat3.names);
+}
+
+const obj1 = {
+    getName(value) {
+        console.log(value);
+    },
+};
+
+obj1.getName?.(123);
